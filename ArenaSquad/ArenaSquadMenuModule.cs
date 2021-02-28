@@ -28,6 +28,7 @@ namespace ArenaSquad
             _statusButton.onClick.AddListener(() =>
             {
                 arenaSquadData.data.isEnabled = !arenaSquadData.data.isEnabled;
+                arenaSquadData.OnDataChanged();
                 _statusButton.GetComponentInChildren<Text>().text =
                     arenaSquadData.data.isEnabled ? "Enabled" : "Disabled";
                 SaveData();

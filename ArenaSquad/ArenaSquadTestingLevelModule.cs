@@ -18,6 +18,9 @@ namespace ArenaSquad
             DebugLogConsole.AddCommandInstance("asd",
                 "Toggle Arena Squad Data", "ArenaSquadData",
                 this);
+            DebugLogConsole.AddCommandInstance("fps",
+                "Get FPS", "GetFPS",
+                this);
             return base.OnLoadCoroutine(level);
         }
 
@@ -40,6 +43,11 @@ namespace ArenaSquad
             var data = GameManager.local.gameObject.GetComponent<ArenaSquadData>();
 
             data.data.isEnabled = !data.data.isEnabled;
+        }
+        
+        public void GetFPS()
+        {
+            Debug.Log("FPS" +    (1.0f / Time.deltaTime));
         }
     }
 }

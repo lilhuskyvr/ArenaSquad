@@ -13,18 +13,17 @@ namespace ArenaSquad
         public string brainId { get; set; }
         public Creature creature { get; set; }
 
-        private IEnumerator PaintCreature(Creature creature, Color color)
+        private IEnumerator PaintCreature(Creature creatureForPainting, Color color)
         {
-            creature.Hide(true);
+            creatureForPainting.Hide(true);
             yield return new WaitForSeconds(2);
-            foreach (var part in creature.manikinLocations.PartList.GetAllParts())
+            foreach (var part in creatureForPainting.manikinLocations.PartList.GetAllParts())
             {
                 foreach (var renderer in part.GetRenderers())
                 {
                     foreach (var material in renderer.materials)
                     {
                         var materialName = material.name.ToLower();
-                        Debug.Log(materialName);
 
                         if (
                             !materialName.Contains("body")
@@ -40,8 +39,8 @@ namespace ArenaSquad
                     }
                 }
             }
-
-            creature.Hide(false);
+            
+            creatureForPainting.Hide(false);
             yield return null;
         }
 

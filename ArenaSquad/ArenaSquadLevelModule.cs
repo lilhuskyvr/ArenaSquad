@@ -78,7 +78,7 @@ namespace ArenaSquad
                     {
                         if (member.creature != null)
                         {
-                            member.creature.Despawn();
+                            member.creature.Kill();
                             member.creature = null;
                         }
                     }

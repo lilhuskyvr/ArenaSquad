@@ -8,7 +8,9 @@ namespace ArenaSquad
     public class ArenaSquadMenuModule : MenuModule
     {
         private Button _statusButton;
-        public static string modFolderName = "ArenaSquadU9";
+        public string modFolderName = "ArenaSquadU9";
+        public string dataFilePath = "\\Data\\ArenaSquadData.json";
+
         // ReSharper disable once InconsistentNaming
         public ArenaSquadData arenaSquadData;
 
@@ -17,8 +19,11 @@ namespace ArenaSquad
             base.Init(menuData, menu);
 
             _statusButton = menu.GetCustomReference("StatusButton").GetComponent<Button>();
-            
+
             LoadData();
+            
+            _statusButton.GetComponentInChildren<Text>().text =
+                arenaSquadData.data.isEnabled ? "Enabled" : "Disabled";
 
             _statusButton.onClick.AddListener(() =>
             {
@@ -29,31 +34,28 @@ namespace ArenaSquad
             });
         }
 
+        private string GetDataFilePath()
+        {
+            return FileManager.GetFullPath(FileManager.Type.JSONCatalog, FileManager.Source.Mods,
+                modFolderName + dataFilePath);
+        }
+
         public void LoadData()
         {
-            var filePath = FileManager.GetFullPath(FileManager.Type.JSONCatalog, FileManager.Source.Mods,
-                modFolderName + "\\Data\\ArenaSquadData.json");
-
-            var input = File.ReadAllText(filePath);
+            var jsonInput = File.ReadAllText(GetDataFilePath());
 
             var savedData =
-                JsonConvert.DeserializeObject<ArenaSquadJSONData>(input);
+                JsonConvert.DeserializeObject<ArenaSquadJSONData>(jsonInput, Catalog.GetJsonNetSerializerSettings());
 
             arenaSquadData = GameManager.local.gameObject.AddComponent<ArenaSquadData>();
             arenaSquadData.data = savedData;
-            _statusButton.GetComponentInChildren<Text>().text =
-                arenaSquadData.data.isEnabled ? "Enabled" : "Disabled";
         }
 
         public void SaveData()
         {
-            var filePath = FileManager.GetFullPath(FileManager.Type.JSONCatalog, FileManager.Source.Mods,
-                modFolderName + "\\Data\\ArenaSquadData.json");
+            var json = JsonConvert.SerializeObject(arenaSquadData.data, Catalog.GetJsonNetSerializerSettings());
 
-
-            var json = JsonConvert.SerializeObject(arenaSquadData.data);
-
-            File.WriteAllText(filePath, json);
+            File.WriteAllText(GetDataFilePath(), json);
         }
     }
 }

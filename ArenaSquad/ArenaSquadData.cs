@@ -2,8 +2,10 @@
 
 namespace ArenaSquad
 {
+    // ReSharper disable once InconsistentNaming
     public class ArenaSquadJSONData
     {
+        // ReSharper disable once InconsistentNaming
         public bool isEnabled { get; set; }
     }
 

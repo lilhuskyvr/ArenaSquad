@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.IO;
+﻿using System.IO;
 using Newtonsoft.Json;
 using ThunderRoad;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace ArenaSquad
@@ -11,6 +9,7 @@ namespace ArenaSquad
     {
         private Button _statusButton;
         public static string modFolderName = "ArenaSquadU9";
+        // ReSharper disable once InconsistentNaming
         public ArenaSquadData arenaSquadData;
 
         public override void Init(MenuData menuData, Menu menu)
@@ -39,9 +38,6 @@ namespace ArenaSquad
 
             var savedData =
                 JsonConvert.DeserializeObject<ArenaSquadJSONData>(input);
-            
-            Debug.Log(input);
-            Debug.Log("Loaded data successfully for menu module");
 
             arenaSquadData = GameManager.local.gameObject.AddComponent<ArenaSquadData>();
             arenaSquadData.data = savedData;

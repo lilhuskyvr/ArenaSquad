@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using IngameDebugConsole;
 using ThunderRoad;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+// ReSharper disable UnusedMember.Global
 
 namespace ArenaSquad
 {
@@ -29,9 +29,9 @@ namespace ArenaSquad
             var levelModuleWave = Level.current.modeRank.mode.GetModule<LevelModuleWave>();
             levelModuleWave.waveData = waveData;
             if (spawnLocationList.Count > 0)
-                levelModuleWave.StartWave(spawnLocationList[0], 0.0f, true);
+                levelModuleWave.StartWave(spawnLocationList[0]);
             else
-                Debug.LogError((object) "There is no spawnlocation on the map");
+                Debug.LogError( "There is no spawnlocation on the map");
         }
 
         public void ArenaSquadData()

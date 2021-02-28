@@ -1,0 +1,16 @@
+C:\Users\nikon\RiderProjects\ArenaSquad\ArenaSquad\obj\Release\ArenaSquad.csprojResolveAssemblyReference.cache
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquad\ArenaSquad.dll
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquad\ArenaSquad.pdb
+C:\Users\nikon\RiderProjects\ArenaSquad\ArenaSquad\obj\Release\ArenaSquad.dll
+C:\Users\nikon\RiderProjects\ArenaSquad\ArenaSquad\obj\Release\ArenaSquad.pdb
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquad\Level_ArenaSquad.json
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquad\manifest.json
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquadU9\manifest.json
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquadU9\Level_ArenaSquad.json
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquadU9\ArenaSquad.dll
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquadU9\ArenaSquad.pdb
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquadU9\Data\ArenaSquadData.json
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquadU9\Menus\Menu_ArenaSquad.json
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquadU9\Data\BrainIds.txt
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquadU9\Data\ContainerIds.txt
+D:\Steam\steamapps\common\Blade & Sorcery\BladeAndSorcery_Data\StreamingAssets\Mods\ArenaSquadU9\Data\CreatureIds.txt

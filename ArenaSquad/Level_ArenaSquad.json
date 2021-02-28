@@ -1,0 +1,71 @@
+{
+  "$type": "ThunderRoad.LevelData, Assembly-CSharp",
+  "id": "Master",
+  "version": 2,
+  "modes": [
+    {
+      "name": "Default",
+      "modules": [
+        {
+          "$type": "ArenaSquad.ArenaSquadLevelModule, ArenaSquad",
+          "uniformColor" : {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          },
+          "members": [
+            {
+              "enabled": true,
+              "creatureId": "HumanMale",
+              "containerId": "Knight1H",
+              "brainId": "BaseWarrior"
+            },
+            {
+              "enabled": true,
+              "creatureId": "HumanMale",
+              "containerId": "Knight1H",
+              "brainId": "BaseWarrior"
+            },
+            {
+              "enabled": true,
+              "creatureId": "HumanMale",
+              "containerId": "Knight1H",
+              "brainId": "BaseWarrior"
+            },
+            {
+              "enabled": true,
+              "creatureId": "HumanMale",
+              "containerId": "Knight1H",
+              "brainId": "BaseWarrior"
+            },
+            {
+              "enabled": true,
+              "creatureId": "HumanFemale",
+              "containerId": "Mage",
+              "brainId": "BaseMage"
+            },
+            {
+              "enabled": false,
+              "creatureId": "HumanFemale",
+              "containerId": "Knight1H",
+              "brainId": "BaseWarrior"
+            },
+            {
+              "enabled": false,
+              "creatureId": "HumanFemale",
+              "containerId": "Knight1H",
+              "brainId": "BaseWarrior"
+            }
+          ]
+        },
+        {
+          "$type": "ArenaSquad.ArenaSquadTestingLevelModule, ArenaSquad"
+        },
+        {
+          "$type": "ArenaSquad.ArenaSquadListBuilderLevelModule, ArenaSquad"
+        }
+      ]
+    }
+  ]
+}

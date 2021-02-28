@@ -1,0 +1,13 @@
+{
+  "$type": "ThunderRoad.MenuData, Assembly-CSharp",
+  "id": "ArenaSquad",
+  "saveFolder": "Bas",
+  "version": 1,
+  "order": 4.0,
+  "isDefault": false,
+  "iconAddress": "Bas.Icon.monkey",
+  "prefabAddress": "ArenaSquadMenu",
+  "module": {
+    "$type": "ArenaSquad.ArenaSquadMenuModule, ArenaSquad"
+  }
+}

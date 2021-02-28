@@ -1,0 +1,17 @@
+BaseArcher
+BaseBattlemage
+BaseBerzerker
+BaseMage
+BaseRogue
+BaseWarrior
+BaseWarriorShield
+PatrolTest
+RecruitBrainArcher
+RecruitBrainMage
+RecruitBrainRogue
+RecruitBrainWarrior
+TestCasterFire
+TestCasterGravity
+TestCasterLightning
+TestNoMelee
+TestNoMove

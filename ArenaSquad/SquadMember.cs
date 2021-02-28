@@ -21,9 +21,10 @@ namespace ArenaSquad
             {
                 foreach (var renderer in part.GetRenderers())
                 {
-                    foreach (var material in renderer.sharedMaterials)
+                    foreach (var material in renderer.materials)
                     {
                         var materialName = material.name.ToLower();
+                        Debug.Log(materialName);
 
                         if (
                             !materialName.Contains("body")
@@ -31,6 +32,7 @@ namespace ArenaSquad
                             && !materialName.Contains("hair")
                             && !materialName.Contains("head")
                             && !materialName.Contains("male_hands")
+                            && !materialName.Contains("mouth")
                         )
 
                             if (material.HasProperty("_BaseColor"))
@@ -46,7 +48,8 @@ namespace ArenaSquad
         private Vector3 FindSpawningLocation(Player player)
         {
             var creatureData = Catalog.GetData<CreatureData>(creatureId);
-            var colliders = Physics.OverlapSphere(player.transform.position, 5);
+            var playerTransform = player.creature.transform;
+            var colliders = Physics.OverlapSphere(playerTransform.position, 5);
             for (int i = -2; i <= 2; i++)
             {
                 for (int j = -2; j <= 2; j++)
@@ -54,8 +57,8 @@ namespace ArenaSquad
                     if (i != 0 && j != 0)
                     {
                         var found = false;
-                        var creaturePosition = player.transform.position + i * player.transform.forward +
-                                               j * player.transform.right;
+                        var creaturePosition = playerTransform.position + i * playerTransform.forward +
+                                               j * playerTransform.right;
                         foreach (var collider in colliders)
                         {
                             if (Vector3.Distance(creaturePosition, collider.transform.position) <
@@ -88,7 +91,7 @@ namespace ArenaSquad
                 creatureData.containerID = containerId;
                 GameManager.local.StartCoroutine(creatureData.SpawnCoroutine(
                     spawningLocation,
-                    player.transform.rotation,
+                    player.creature.transform.rotation,
                     null,
                     squadMember =>
                     {

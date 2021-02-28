@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using ThunderRoad;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
+
 // ReSharper disable UnusedType.Global
 
 namespace ArenaSquad

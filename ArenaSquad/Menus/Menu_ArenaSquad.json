@@ -5,7 +5,7 @@
   "version": 1,
   "order": 4.0,
   "isDefault": false,
-  "iconAddress": "Bas.Icon.monkey",
+  "iconAddress": "arenasquadmenuicon",
   "prefabAddress": "ArenaSquadMenu",
   "module": {
     "$type": "ArenaSquad.ArenaSquadMenuModule, ArenaSquad"

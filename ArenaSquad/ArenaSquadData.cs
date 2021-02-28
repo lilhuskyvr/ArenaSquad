@@ -17,6 +17,7 @@ namespace ArenaSquad
     {
         public List<SquadMember> members;
         public ArenaSquadJSONData data;
+        public Color uniformColor;
 
         private void Start()
         {
@@ -46,10 +47,10 @@ namespace ArenaSquad
                 //if disabled
                 foreach (var member in members)
                 {
-                    if (member.creature != null)
+                    if (member.squadMemberCreature != null)
                     {
-                        member.creature.Kill();
-                        member.creature = null;
+                        member.squadMemberCreature.Kill();
+                        member.squadMemberCreature = null;
                     }
                 }
 
@@ -77,7 +78,7 @@ namespace ArenaSquad
             return memberCount;
         }
 
-        public void SpawnMembers(Creature player, Color uniformColor)
+        public void SpawnMembers(Creature player)
         {
             if (data.isEnabled)
             {

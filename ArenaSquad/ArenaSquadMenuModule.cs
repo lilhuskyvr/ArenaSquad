@@ -29,6 +29,8 @@ namespace ArenaSquad
             {
                 arenaSquadData.data.isEnabled = !arenaSquadData.data.isEnabled;
                 arenaSquadData.OnDataChanged();
+                if (arenaSquadData.data.isEnabled)
+                    arenaSquadData.SpawnMembers(Player.local.creature);
                 _statusButton.GetComponentInChildren<Text>().text =
                     arenaSquadData.data.isEnabled ? "Enabled" : "Disabled";
                 SaveData();

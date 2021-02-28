@@ -11,14 +11,13 @@ namespace ArenaSquad
         public string creatureId { get; set; }
         public string containerId { get; set; }
         public string brainId { get; set; }
-        public Creature creature { get; set; }
+        public Creature squadMemberCreature { get; set; }
 
         private Color _uniformColor;
 
         private IEnumerator PaintCreature(Creature creatureForPainting, Color color)
         {
-            creatureForPainting.Hide(true);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             foreach (var part in creatureForPainting.manikinLocations.PartList.GetAllParts())
             {
                 foreach (var renderer in part.GetRenderers())
@@ -42,7 +41,6 @@ namespace ArenaSquad
                 }
             }
 
-            creatureForPainting.Hide(false);
             yield return null;
         }
 
@@ -95,28 +93,17 @@ namespace ArenaSquad
                     spawningLocation,
                     player.transform.rotation,
                     null,
-                    squadMember =>
+                    spawnedSquadMemberCreature =>
                     {
-                        squadMember.SetFaction(2);
-                        var brainHuman = squadMember.brain.instance as BrainHuman;
+                        spawnedSquadMemberCreature.SetFaction(2);
+                        var brainHuman = spawnedSquadMemberCreature.brain.instance as BrainHuman;
                         brainHuman.canLeave = false;
                         brainHuman.allowDisarm = false;
                         brainHuman.allowRearm = false;
                         brainHuman.allowShieldRearm = false;
-                        creature = squadMember;
-                        squadMember.OnKillEvent += SquadMemberOnOnKillEvent;
-                        GameManager.local.StartCoroutine(PaintCreature(squadMember, uniformColor));
+                        squadMemberCreature = spawnedSquadMemberCreature;
+                        GameManager.local.StartCoroutine(PaintCreature(spawnedSquadMemberCreature, uniformColor));
                     }));
-            }
-        }
-
-        private void SquadMemberOnOnKillEvent(CollisionInstance collisioninstance, EventTime eventtime)
-        {
-            var arenaSquadData = GameManager.local.GetComponent<ArenaSquadData>();
-
-            if (arenaSquadData.data.isEnabled)
-            {
-                SpawnCreature(Player.local.creature, _uniformColor);
             }
         }
     }

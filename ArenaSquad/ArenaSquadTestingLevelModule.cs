@@ -43,11 +43,16 @@ namespace ArenaSquad
             var data = GameManager.local.gameObject.GetComponent<ArenaSquadData>();
 
             data.data.isEnabled = !data.data.isEnabled;
+
+            data.OnDataChanged();
+
+            if (data.data.isEnabled)
+                data.SpawnMembers(Player.local.creature);
         }
-        
+
         public void GetFPS()
         {
-            Debug.Log("FPS" +    (1.0f / Time.deltaTime));
+            Debug.Log("FPS: " + (1.0f / Time.deltaTime));
         }
     }
 }

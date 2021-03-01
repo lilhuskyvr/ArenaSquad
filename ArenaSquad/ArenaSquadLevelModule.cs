@@ -17,12 +17,24 @@ namespace ArenaSquad
         private Player _player;
         private ArenaSquadData _arenaSquadData;
         private bool _isEnabled;
+        private Dictionary<string, int> _maxAlives = new Dictionary<string, int>();
 
         public override IEnumerator OnLoadCoroutine(Level level)
         {
             SceneManager.sceneLoaded += SceneManagerOnsceneLoaded;
             EventManager.onCreatureSpawn += EventManagerOnonCreatureSpawn;
             EventManager.onCreatureKill += EventManagerOnonCreatureKill;
+
+            for (int i = 0; i < Catalog.data.Length; i++)
+            {
+                foreach (CatalogData catalogData in Catalog.data[i])
+                {
+                    if (catalogData is WaveData)
+                    {
+                        _maxAlives[catalogData.id] = (catalogData as WaveData).maxAlive;
+                    }
+                }
+            }
 
             return base.OnLoadCoroutine(level);
         }
@@ -32,7 +44,6 @@ namespace ArenaSquad
         {
             if (eventtime == EventTime.OnEnd)
             {
-
                 if (_arenaSquadData.data.isEnabled)
                 {
                     foreach (var member in members)
@@ -51,6 +62,8 @@ namespace ArenaSquad
             _arenaSquadData = GameManager.local.gameObject.GetComponent<ArenaSquadData>();
             _arenaSquadData.members = members;
             _arenaSquadData.uniformColor = uniformColor;
+            _arenaSquadData.maxAlives = _maxAlives;
+            
             _arenaSquadData.OnDataChanged();
         }
 

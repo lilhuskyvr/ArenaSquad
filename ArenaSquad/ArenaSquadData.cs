@@ -18,6 +18,7 @@ namespace ArenaSquad
         public List<SquadMember> members;
         public ArenaSquadJSONData data;
         public Color uniformColor;
+        public Dictionary<string, int> maxAlives;
 
         private void Start()
         {
@@ -37,7 +38,7 @@ namespace ArenaSquad
                     {
                         if (catalogData is WaveData)
                         {
-                            (catalogData as WaveData).maxAlive += memberCount;
+                            (catalogData as WaveData).maxAlive = maxAlives[catalogData.id] + memberCount;
                         }
                     }
                 }
@@ -60,7 +61,7 @@ namespace ArenaSquad
                     {
                         if (catalogData is WaveData)
                         {
-                            (catalogData as WaveData).maxAlive -= memberCount;
+                            (catalogData as WaveData).maxAlive = maxAlives[catalogData.id];
                         }
                     }
                 }

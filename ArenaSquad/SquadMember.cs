@@ -17,7 +17,7 @@ namespace ArenaSquad
 
         private IEnumerator PaintCreature(Creature creatureForPainting, Color color)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(2);
             foreach (var part in creatureForPainting.manikinLocations.PartList.GetAllParts())
             {
                 foreach (var renderer in part.GetRenderers())

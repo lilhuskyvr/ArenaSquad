@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using IngameDebugConsole;
 using ThunderRoad;
 using UnityEngine;
+
 // ReSharper disable UnusedMember.Global
 
 namespace ArenaSquad
@@ -16,6 +17,9 @@ namespace ArenaSquad
                 this);
             DebugLogConsole.AddCommandInstance("asd",
                 "Toggle Arena Squad Data", "ArenaSquadData",
+                this);
+            DebugLogConsole.AddCommandInstance("fps",
+                "Get FPS", "GetFPS",
                 this);
             return base.OnLoadCoroutine(level);
         }
@@ -31,7 +35,7 @@ namespace ArenaSquad
             if (spawnLocationList.Count > 0)
                 levelModuleWave.StartWave(spawnLocationList[0]);
             else
-                Debug.LogError( "There is no spawnlocation on the map");
+                Debug.LogError("There is no spawnlocation on the map");
         }
 
         public void ArenaSquadData()
@@ -39,6 +43,16 @@ namespace ArenaSquad
             var data = GameManager.local.gameObject.GetComponent<ArenaSquadData>();
 
             data.data.isEnabled = !data.data.isEnabled;
+
+            data.OnDataChanged();
+
+            if (data.data.isEnabled)
+                data.SpawnMembers(Player.local.creature);
+        }
+
+        public void GetFPS()
+        {
+            Debug.Log("FPS: " + (1.0f / Time.deltaTime));
         }
     }
 }

@@ -12,110 +12,66 @@ namespace ArenaSquad
 {
     public class ArenaSquadLevelModule : LevelModule
     {
-        public List<SquadMember> members;
         public Color uniformColor;
+        public List<SquadMember> members;
         private Player _player;
-        private int _memberCount;
         private ArenaSquadData _arenaSquadData;
         private bool _isEnabled;
+        private Dictionary<string, int> _maxAlives = new Dictionary<string, int>();
 
         public override IEnumerator OnLoadCoroutine(Level level)
         {
-            EventManager.onPlayerSpawn += EventManagerOnonPlayerSpawn;
             SceneManager.sceneLoaded += SceneManagerOnsceneLoaded;
-            _memberCount = 0;
-            foreach (var member in members)
+            EventManager.onCreatureSpawn += EventManagerOnonCreatureSpawn;
+            EventManager.onCreatureKill += EventManagerOnonCreatureKill;
+
+            for (int i = 0; i < Catalog.data.Length; i++)
             {
-                if (member.enabled)
-                    _memberCount++;
+                foreach (CatalogData catalogData in Catalog.data[i])
+                {
+                    if (catalogData is WaveData)
+                    {
+                        _maxAlives[catalogData.id] = (catalogData as WaveData).maxAlive;
+                    }
+                }
             }
 
             return base.OnLoadCoroutine(level);
         }
 
-        private void SceneManagerOnsceneLoaded(Scene arg0, LoadSceneMode arg1)
+        private void EventManagerOnonCreatureKill(Creature creature, Player player, CollisionInstance collisioninstance,
+            EventTime eventtime)
         {
-            foreach (var member in members)
+            if (eventtime == EventTime.OnEnd)
             {
-                member.creature = null;
-            }
-        }
-
-        private void EventManagerOnonPlayerSpawn(Player player)
-        {
-            _player = Player.local;
-        }
-
-        public override void Update(Level level)
-        {
-            if (_player == null)
-                return;
-
-            try
-            {
-                if (_arenaSquadData == null)
-                    _arenaSquadData = GameManager.local.gameObject.GetComponent<ArenaSquadData>();
-
                 if (_arenaSquadData.data.isEnabled)
                 {
                     foreach (var member in members)
                     {
-                        if (member.enabled)
+                        if (ReferenceEquals(member.squadMemberCreature, creature))
                         {
-                            if (member.creature == null || member.creature.state == Creature.State.Dead)
-                            {
-                                member.SpawnCreature(_player, uniformColor);
-                            }
+                            member.SpawnCreature(Player.local.creature, uniformColor);
                         }
                     }
                 }
-
-                if (!_arenaSquadData.data.isEnabled && _isEnabled)
-                {
-                    
-                    //clean
-                    foreach (var member in members)
-                    {
-                        if (member.creature != null)
-                        {
-                            member.creature.Despawn();
-                            member.creature = null;
-                        }
-                    }
-                    for (int i = 0; i < Catalog.data.Length; i++)
-                    {
-                        foreach (CatalogData catalogData in Catalog.data[i])
-                        {
-                            if (catalogData is WaveData)
-                            {
-                                (catalogData as WaveData).maxAlive -= _memberCount;
-                            }
-                        }
-                    }
-                }
-
-                if (_arenaSquadData.data.isEnabled && !_isEnabled)
-                {
-                    for (int i = 0; i < Catalog.data.Length; i++)
-                    {
-                        foreach (CatalogData catalogData in Catalog.data[i])
-                        {
-                            if (catalogData is WaveData)
-                            {
-                                (catalogData as WaveData).maxAlive += _memberCount;
-                            }
-                        }
-                    }
-                }
-                
-                _isEnabled = _arenaSquadData.data.isEnabled;
-
             }
-            #pragma warning disable 168
-            catch (Exception exception)
-            #pragma warning restore 168
+        }
+
+        private void SceneManagerOnsceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            _arenaSquadData = GameManager.local.gameObject.GetComponent<ArenaSquadData>();
+            _arenaSquadData.members = members;
+            _arenaSquadData.uniformColor = uniformColor;
+            _arenaSquadData.maxAlives = _maxAlives;
+            
+            _arenaSquadData.OnDataChanged();
+        }
+
+        private void EventManagerOnonCreatureSpawn(Creature creature)
+        {
+            if (creature.isPlayer)
             {
-                // ignored
+                _arenaSquadData.SpawnMembers(creature);
             }
         }
     }

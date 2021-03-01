@@ -11,20 +11,20 @@ namespace ArenaSquad
         public string creatureId { get; set; }
         public string containerId { get; set; }
         public string brainId { get; set; }
-        public Creature creature { get; set; }
+        public Creature squadMemberCreature { get; set; }
 
-        private IEnumerator PaintCreature(Creature creature, Color color)
+        private Color _uniformColor;
+
+        private IEnumerator PaintCreature(Creature creatureForPainting, Color color)
         {
-            creature.Hide(true);
             yield return new WaitForSeconds(2);
-            foreach (var part in creature.manikinLocations.PartList.GetAllParts())
+            foreach (var part in creatureForPainting.manikinLocations.PartList.GetAllParts())
             {
                 foreach (var renderer in part.GetRenderers())
                 {
                     foreach (var material in renderer.materials)
                     {
                         var materialName = material.name.ToLower();
-                        Debug.Log(materialName);
 
                         if (
                             !materialName.Contains("body")
@@ -41,14 +41,13 @@ namespace ArenaSquad
                 }
             }
 
-            creature.Hide(false);
             yield return null;
         }
 
-        private Vector3 FindSpawningLocation(Player player)
+        private Vector3 FindSpawningLocation(Creature player)
         {
             var creatureData = Catalog.GetData<CreatureData>(creatureId);
-            var playerTransform = player.creature.transform;
+            var playerTransform = player.transform;
             var colliders = Physics.OverlapSphere(playerTransform.position, 5);
             for (int i = -2; i <= 2; i++)
             {
@@ -80,8 +79,9 @@ namespace ArenaSquad
             return Vector3.zero;
         }
 
-        public void SpawnCreature(Player player, Color uniformColor)
+        public void SpawnCreature(Creature player, Color uniformColor)
         {
+            _uniformColor = uniformColor;
             var spawningLocation = FindSpawningLocation(player);
 
             if (spawningLocation != Vector3.zero)
@@ -91,18 +91,18 @@ namespace ArenaSquad
                 creatureData.containerID = containerId;
                 GameManager.local.StartCoroutine(creatureData.SpawnCoroutine(
                     spawningLocation,
-                    player.creature.transform.rotation,
+                    player.transform.rotation,
                     null,
-                    squadMember =>
+                    spawnedSquadMemberCreature =>
                     {
-                        squadMember.SetFaction(2);
-                        var brainHuman = squadMember.brain.instance as BrainHuman;
+                        spawnedSquadMemberCreature.SetFaction(2);
+                        var brainHuman = spawnedSquadMemberCreature.brain.instance as BrainHuman;
                         brainHuman.canLeave = false;
                         brainHuman.allowDisarm = false;
                         brainHuman.allowRearm = false;
                         brainHuman.allowShieldRearm = false;
-                        creature = squadMember;
-                        GameManager.local.StartCoroutine(PaintCreature(squadMember, uniformColor));
+                        squadMemberCreature = spawnedSquadMemberCreature;
+                        GameManager.local.StartCoroutine(PaintCreature(spawnedSquadMemberCreature, uniformColor));
                     }));
             }
         }

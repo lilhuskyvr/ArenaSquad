@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.IO;
+﻿using System.IO;
 using Newtonsoft.Json;
 using ThunderRoad;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace ArenaSquad
@@ -10,7 +8,10 @@ namespace ArenaSquad
     public class ArenaSquadMenuModule : MenuModule
     {
         private Button _statusButton;
-        public static string modFolderName = "ArenaSquadU9";
+        public string modFolderName = "ArenaSquadU9";
+        public string dataFilePath = "\\Data\\ArenaSquadData.json";
+
+        // ReSharper disable once InconsistentNaming
         public ArenaSquadData arenaSquadData;
 
         public override void Init(MenuData menuData, Menu menu)
@@ -18,46 +19,46 @@ namespace ArenaSquad
             base.Init(menuData, menu);
 
             _statusButton = menu.GetCustomReference("StatusButton").GetComponent<Button>();
-            
+
             LoadData();
+            
+            _statusButton.GetComponentInChildren<Text>().text =
+                arenaSquadData.data.isEnabled ? "Enabled" : "Disabled";
 
             _statusButton.onClick.AddListener(() =>
             {
                 arenaSquadData.data.isEnabled = !arenaSquadData.data.isEnabled;
+                arenaSquadData.OnDataChanged();
+                if (arenaSquadData.data.isEnabled)
+                    arenaSquadData.SpawnMembers(Player.local.creature);
                 _statusButton.GetComponentInChildren<Text>().text =
                     arenaSquadData.data.isEnabled ? "Enabled" : "Disabled";
                 SaveData();
             });
         }
 
+        private string GetDataFilePath()
+        {
+            return FileManager.GetFullPath(FileManager.Type.JSONCatalog, FileManager.Source.Mods,
+                modFolderName + dataFilePath);
+        }
+
         public void LoadData()
         {
-            var filePath = FileManager.GetFullPath(FileManager.Type.JSONCatalog, FileManager.Source.Mods,
-                modFolderName + "\\Data\\ArenaSquadData.json");
-
-            var input = File.ReadAllText(filePath);
+            var jsonInput = File.ReadAllText(GetDataFilePath());
 
             var savedData =
-                JsonConvert.DeserializeObject<ArenaSquadJSONData>(input);
-            
-            Debug.Log(input);
-            Debug.Log("Loaded data successfully for menu module");
+                JsonConvert.DeserializeObject<ArenaSquadJSONData>(jsonInput, Catalog.GetJsonNetSerializerSettings());
 
             arenaSquadData = GameManager.local.gameObject.AddComponent<ArenaSquadData>();
             arenaSquadData.data = savedData;
-            _statusButton.GetComponentInChildren<Text>().text =
-                arenaSquadData.data.isEnabled ? "Enabled" : "Disabled";
         }
 
         public void SaveData()
         {
-            var filePath = FileManager.GetFullPath(FileManager.Type.JSONCatalog, FileManager.Source.Mods,
-                modFolderName + "\\Data\\ArenaSquadData.json");
+            var json = JsonConvert.SerializeObject(arenaSquadData.data, Catalog.GetJsonNetSerializerSettings());
 
-
-            var json = JsonConvert.SerializeObject(arenaSquadData.data);
-
-            File.WriteAllText(filePath, json);
+            File.WriteAllText(GetDataFilePath(), json);
         }
     }
 }
